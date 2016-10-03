@@ -1,37 +1,51 @@
+'use strict';
+
 const https = require('https');
 const cheerio = require('cheerio');
-const request = require('request');
+const request = require('request-promise');
 
-// request('http://wikipedia.org/wiki/lambda', (err, res, html) => {
-// 	if (err) {
-// 		console.log(err);
-// 		return;
-// 	}
-// 	if (res.statusCode === 200) {
-// 		console.log(html);
-// 	}
-// });
+function matchWikiUrls(html) {
+	return html.match(/href="(\/wiki\/[^"]+)/gi);
+}
+ 
+function testForWikiArticlePage(str) {
+	return str.indexOf('File:') === -1 && str.indexOf('Wikipedia:') === -1;
+}
 
-const options = {
-	hostname: 'en.wikipedia.org',
-	path: '/wiki/Pastry'
-};
-
-var req = https.request(options, res => {
-	let str = '';
-	console.log(res.statusCode);
-	res.on('data', chunk => {
-		str += chunk;
+function getUrlsFromMatch(match) {
+	return match.map(str => {
+		return str.slice(6);
+	})
+	.filter(str => {
+		return testForWikiArticlePage(str);
 	});
+}
 
-	res.on('end', () => {
-		console.log(str);
-	});
-});
+function depthFirstSearch(urlArray, current, destination) {
+	if (current === destination) {
+		return Promise.resolve(current);
+	} else {
+		for (var i = 0; i < urlArray.length; i++) {
+			request('https://en.wikipedia.org' + urlArray[i])
+		}
+	}
+}
+
+function makeRequest(wikiPage) {
+	request(wikiPath + wikiPage)
+	.then(htmlString => {
+		let urlArray = getUrlsFromMatch(matchWikiUrls(htmlString))
+
+	})
+	.catch(console.error);
+}
+
+// testing path = pastry -> danish pastry -> puff_pastry -> olive_oil
+
+const wikiPath = 'https://en.wikipedia.org';
+const start = '/wiki/Pastry';
+const destination = '/wiki/Olive_oil';
+
+makeRequest(start);
 
 
-req.on('error', e => {
-	console.log('problem with request: ' + e.message);
-});
-
-req.end();
