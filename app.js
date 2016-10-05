@@ -21,21 +21,42 @@ function getUrlsFromMatch(match) {
 	});
 }
 
-function depthFirstSearch(urlArray, current, destination) {
-	if (current === destination) {
-		return Promise.resolve(current);
-	} else {
-		for (var i = 0; i < urlArray.length; i++) {
-			request('https://en.wikipedia.org' + urlArray[i])
+function makeRequest(wikiObj) {
+	return request(wikiPath + wikiObj.link)
+	.then(htmlString => {
+		let urlArray = getUrlsFromMatch(matchWikiUrls(htmlString));
+		queue = queue.concat(
+			urlArray
+			.filter(elem => {
+				return !visited[elem];
+			})
+			.map(elem => {
+				return {
+					link: elem,
+					path: wikiObj.path + ' ' + elem
+				}
+			})
+		);
+		queue.shift();
+		for (var i = 0; i < queue.length; i++) {
+			if (queue[i].link === destination) {
+				return queue[i].path;
+			}
 		}
-	}
+		return findPath();
+	});
 }
 
-function makeRequest(wikiPage) {
-	request(wikiPath + wikiPage)
-	.then(htmlString => {
-		let urlArray = getUrlsFromMatch(matchWikiUrls(htmlString))
-
+function findPath() {
+	if (queue[0] === destination) {
+		return queue[0].path;
+	}
+	if (queue[0]) {
+		visited[queue[0].link] = true;
+	} 
+	makeRequest(queue[0])
+	.then(res => {
+		console.log(res);
 	})
 	.catch(console.error);
 }
@@ -46,6 +67,13 @@ const wikiPath = 'https://en.wikipedia.org';
 const start = '/wiki/Pastry';
 const destination = '/wiki/Olive_oil';
 
-makeRequest(start);
+let queue = [{
+	link: start,
+	path: start
+}];
+
+const visited = {};
+
+findPath(start, destination);
 
 
