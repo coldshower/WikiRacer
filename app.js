@@ -1,23 +1,7 @@
 'use strict';
 
 const request = require('request-promise');
-
-function matchWikiUrls(html) {
-	return html.match(/href="(\/wiki\/[^"]+)/gi);
-}
- 
-function testForWikiArticlePage(str) {
-	return str.indexOf('File:') === -1 && str.indexOf('Wikipedia:') === -1;
-}
-
-function getUrlsFromMatch(match) {
-	return match.map(str => {
-		return str.slice(6);
-	})
-	.filter(str => {
-		return testForWikiArticlePage(str);
-	});
-}
+const { matchWikiUrls, testForWikiArticlePage, getUrlsFromMatch } = require('./utils.js');
 
 function makeRequest(wikiObj) {
 	return request(wikiPath + wikiObj.link)
@@ -36,7 +20,7 @@ function makeRequest(wikiObj) {
 			})
 		);
 		queue.shift();
-		for (var i = 0; i < queue.length; i++) {
+		for (let i = 0; i < queue.length; i++) {
 			if (queue[i].link === destination) {
 				return queue[i].path;
 			}
