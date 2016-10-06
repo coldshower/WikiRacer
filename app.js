@@ -1,7 +1,5 @@
 'use strict';
 
-const https = require('https');
-const cheerio = require('cheerio');
 const request = require('request-promise');
 
 function matchWikiUrls(html) {
@@ -61,7 +59,7 @@ function findPath() {
 	.catch(console.error);
 }
 
-// testing path = pastry -> danish pastry -> puff_pastry -> olive_oil
+// testing path = keyboard_cat -> danish pastry -> puff_pastry -> olive_oil
 
 const wikiPath = 'https://en.wikipedia.org';
 const start = '/wiki/Pastry';
@@ -72,7 +70,7 @@ let queue = [{
 	path: start
 }];
 
-const visited = {};
+const visited = {}; // cache links already traveled
 
 findPath(start, destination);
 

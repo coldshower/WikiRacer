@@ -14,7 +14,7 @@ promisifiedRequest.get = Promise.method(url => {
 				});
 
 				res.on('end', () => {
-					if (res.statusCode === 301) {
+					if (res.statusCode === 301) { // if there is a redirect
 						makeGetRequest(res.headers.location);
 					} else {
 						resolve(rawHtml);
@@ -33,7 +33,7 @@ promisifiedRequest.get = Promise.method(url => {
 	});
 });
 
-promisifiedRequest.get('https://wikipedia.org/wiki/Keyboardcat')
+promisifiedRequest.get('https://wikipedia.org/wiki/Keyboard_Cat')
 .then(res => {
 	console.log(res);
 })
