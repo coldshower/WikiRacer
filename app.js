@@ -1,30 +1,33 @@
 'use strict';
 
 const request = require('request-promise');
-const { matchWikiUrls, testForWikiArticlePage, getUrlsFromMatch } = require('./utils.js');
+const utils = require('./utils.js');
+const matchWikiUrls = utils.matchWikiUrls;
+const getUrlsFromMatch = utils.getUrlsFromMatch;
+
 
 function makeRequest(wikiObj) {
 	return request(wikiPath + wikiObj.link)
 	.then(htmlString => {
 		let urlArray = getUrlsFromMatch(matchWikiUrls(htmlString));
-		queue = queue.concat(
-			urlArray
-			.filter(elem => {
-				return !visited[elem];
-			})
+
+		urlArray = urlArray
+			.filter(elem => !visited[elem])
 			.map(elem => {
 				return {
 					link: elem,
 					path: wikiObj.path + ' ' + elem
 				}
-			})
-		);
-		queue.shift();
-		for (let i = 0; i < queue.length; i++) {
-			if (queue[i].link === destination) {
-				return queue[i].path;
+			});
+		
+		for (let i = 0; i < urlArray.length; i++) {
+			if (urlArray[i].link === destination) {
+				return urlArray[i].path;
 			}
 		}
+
+		queue.shift();
+		queue = queue.concat(urlArray);
 		return findPath();
 	});
 }
@@ -46,8 +49,8 @@ function findPath() {
 // testing path = keyboard_cat -> danish pastry -> puff_pastry -> olive_oil
 
 const wikiPath = 'https://en.wikipedia.org';
-const start = '/wiki/Pastry';
-const destination = '/wiki/Olive_oil';
+const start = '/wiki/Teucrium_canadense';
+const destination = '/wiki/Deserts_and_xeric_shrublands';
 
 let queue = [{
 	link: start,

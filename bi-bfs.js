@@ -28,6 +28,10 @@ function sortObjByLength(obj1, obj2) {
 }
 
 function findPath() {
+	if (startQueue[0].link === destQueue[0].link) {
+		return startQueue.path + destQueue.path;
+	}
+
 	for (let i = 0; i < startQueue.length; i++) {
 		let { currLink, currPath } = startQueue[i];
 
@@ -38,7 +42,7 @@ function findPath() {
 		} else {
 			centralTerminal[currLink] = {
 				link: currLink,
-				path: currPath
+				startPath: currPath
 			}
 		}
 	}
@@ -53,12 +57,29 @@ function findPath() {
 		} else {
 			centralTerminal[currLink] = {
 				link: currLink,
-				path: currPath
+				endPath: currPath
 			}
 		}
 	}
 
 	makeRequest(startQueue[0], destQueue[0]);
+}
+
+function makeRequest(wiki1, wiki2) {
+	request(wikiPath + wiki1.link)
+	.then(htmlString => {
+		let urlArray = getUrlsFromMatch(matchWikiUrls(htmlString));
+		urlArray = urlArray
+			.filter(elem => !centralTerminal[elem][startPath].startPath)
+			.map(elem => {
+				let wikiObj = {
+					link: elem,
+					startPath: wikiObj.path + ' ' + elem
+				};
+				centralTerminal[elem] = wikiObj;
+				return wikiObj;
+			});
+	})
 }
 
 
