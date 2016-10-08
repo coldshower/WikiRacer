@@ -1,11 +1,12 @@
 'use strict';
 
 const request = require('request-promise');
-const { matchWikiUrls, testForWikiArticlePage, getUrlsFromMatch } = require('./utils.js');
+
+const { matchWikiUrls, getUrlsFromMatch } = require('./utils.js');
 
 const wikiPath = 'https://en.wikipedia.org';
-const start = '/wiki/Pastry';
-const destination = '/wiki/Olive_oil';
+const start = '/wiki/Teucrium_canadense';
+const destination = '/wiki/Deserts_and_xeric_shrublands';
 
 const centralTerminal = {};
 

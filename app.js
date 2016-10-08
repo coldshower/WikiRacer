@@ -1,9 +1,7 @@
 'use strict';
 
 const request = require('request-promise');
-const utils = require('./utils.js');
-const matchWikiUrls = utils.matchWikiUrls;
-const getUrlsFromMatch = utils.getUrlsFromMatch;
+const { matchWikiUrls, getUrlsFromMatch } = require('./utils.js');
 
 
 function makeRequest(wikiObj) {
@@ -14,10 +12,11 @@ function makeRequest(wikiObj) {
 		urlArray = urlArray
 			.filter(elem => !visited[elem])
 			.map(elem => {
+				visited[elem] = true;
 				return {
 					link: elem,
 					path: wikiObj.path + ' ' + elem
-				}
+				};
 			});
 		
 		for (let i = 0; i < urlArray.length; i++) {
@@ -33,6 +32,7 @@ function makeRequest(wikiObj) {
 }
 
 function findPath() {
+	console.log(queue[0], queue.length)
 	if (queue[0] === destination) {
 		return queue[0].path;
 	}
@@ -41,12 +41,14 @@ function findPath() {
 	} 
 	makeRequest(queue[0])
 	.then(res => {
-		console.log(res);
+		if (res) {
+			console.log(Date.now() - timeStart);
+			console.log(res);
+		}
+		return null;
 	})
 	.catch(console.error);
 }
-
-// testing path = keyboard_cat -> danish pastry -> puff_pastry -> olive_oil
 
 const wikiPath = 'https://en.wikipedia.org';
 const start = '/wiki/Teucrium_canadense';
@@ -58,6 +60,7 @@ let queue = [{
 }];
 
 const visited = {}; // cache links already traveled
+const timeStart = Date.now();
 
 findPath(start, destination);
 
