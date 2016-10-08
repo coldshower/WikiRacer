@@ -39,7 +39,7 @@ function findPath() {
 	if (queue[0]) {
 		visited[queue[0].link] = true;
 	} 
-	makeRequest(queue[0])
+	return makeRequest(queue[0])
 	.then(res => {
 		if (res) {
 			console.log(Date.now() - timeStart);
@@ -47,7 +47,6 @@ function findPath() {
 		}
 		return null;
 	})
-	.catch(console.error);
 }
 
 const wikiPath = 'https://en.wikipedia.org';
