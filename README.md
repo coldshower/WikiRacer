@@ -8,7 +8,7 @@ Given a starting page and destination page on wikipedia, find the shortest path 
 
 *End*: https://en.wikipedia.org/wiki/Windows_Phone
 
-*Path*: 1) /wiki/Keyboard_Cat  2) /wiki/EBay  3) /wiki/Windows_Phone
+*Path*: /wiki/Keyboard_Cat /wiki/EBay /wiki/Windows_Phone
 
 # Files
 ### app.js
