@@ -12,6 +12,15 @@ Given a starting page and destination page on wikipedia, find the shortest path 
 
 # Files
 ### app.js
-Breadth-first approach to finding shortest path 
+A breadth-first approach to finding the shortest path from the start to destination.
+
+### bi-bfs.js
+A bi-directional breadth-first approach, with both the starting point and destination point crawling towards each other.
+
+### no-lib.js
+My own small implementation of a promisifed-request library that handles redirects, in case you were interested in knowing how that works.
+
+### utils.js
+Functions used for parsing HTML for hrefs, and filtering out valid wikipedia links.
 
 
