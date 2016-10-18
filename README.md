@@ -10,9 +10,12 @@ Given a starting page and destination page on wikipedia, find the shortest path 
 
 **Path**: /wiki/Keyboard_Cat /wiki/EBay /wiki/Windows_Phone
 
+# How to Use
+1. `node app.js` or `node bi-bfs.js` or etc...
+
 # Files
 ### app.js
-A breadth-first approach to finding the shortest path from the start to destination. 
+A breadth-first approach to finding the shortest path from the start to destination. Uses a cache to prevent the checking of links that are already being checked. 
 
 ### bi-bfs.js
 A bi-directional breadth-first approach, with both the starting point and destination point crawling towards each other.
