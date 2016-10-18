@@ -12,6 +12,7 @@ Given a starting page and destination page on wikipedia, find the shortest path 
 
 # How to Use
 1. `node app.js` or `node bi-bfs.js` or etc...
+2. You can change the start and endpoints easily within the files.
 
 # Files
 ### app.js
