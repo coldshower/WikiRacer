@@ -37,6 +37,6 @@ promisifiedRequest.get('https://wikipedia.org/wiki/Keyboard_Cat')
 .then(res => {
 	console.log(res);
 })
-.catch(console.error);
+.catch(console.error); 
 
 
